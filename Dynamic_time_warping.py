@@ -14,7 +14,6 @@ def DTWDistance(n, m):
     for i in range(len(m)):
         for j in range(len(n)):
             DTW[i, j] = DTWDynamic(np.fabs(n[i][j] - m[i][j]), DTW, i, j)
-
     return DTW, DTW[19][19]
 
 
@@ -22,7 +21,8 @@ def DTWDynamic(cost, DTW, i, j):
     if j != len(DTW) - 1:
         var = (cost + np.amin([DTW[i, j],
                                DTW[i, j - 1],
-                               DTW[i, j + 1]
+                               DTW[i, j + 1],
+                               DTW[i - 1, j - 1]
                                ]))
     else:
         var = (cost + np.amin([DTW[i, j],

@@ -1,3 +1,5 @@
+import sys
+
 import numpy as np
 import cv2
 # import multiprocessing
@@ -5,9 +7,6 @@ from multiprocessing import Process
 import HackISU2019.TrackLines as TrackLine
 import HackISU2019.Dynamic_time_warping as DTW
 from HackISU2019.PostGetData import PostData
-from cloudant.client import Cloudant
-from cloudant.error import CloudantException
-from cloudant.result import Result, ResultByKey
 
 
 def getArray(image, colBottom, colTop, rowBottom, rowTop):
@@ -17,6 +16,7 @@ def getArray(image, colBottom, colTop, rowBottom, rowTop):
 
 
 class Render:
+    np.set_printoptions(threshold=sys.maxsize)
     video = cv2.VideoCapture('test.mp4')
 
     prevFrame = None
@@ -46,21 +46,21 @@ class Render:
         if prevNum == 1:
             DTWArray, distance = DTW.DTWDistance(prevFrame, pixelArray)
             prevNum = 0;
+            # print(DTWArray)
+            # print('space')
 
-
-            #PostData(2342143245)
+            # PostData(2342143245)
             p1 = Process(target=PostData, args=(distance,))
             p1.start()
-            p1.join()
 
 
             # DTW.plotG(prevFrame, pixelArray, DTWArray)
         else:
             prevNum = 1
             prevFrame = pixelArray
-        if prevNum == 1:
-            cv2.putText(grayFrame, str(DTW.averagePointDifference(DTWArray)), (50, 400), cv2.FONT_HERSHEY_SIMPLEX, 1,
-                        (124, 252, 0), 2)
+        cv2.putText(grayFrame, str(DTW.averagePointDifference(DTWArray)), (50, 400), cv2.FONT_HERSHEY_SIMPLEX, 1,
+                    (124, 252, 0), 2)
+
         if ret:
             # cv2.putText(grayFrame, str(distance), (50, 400), cv2.FONT_HERSHEY_SIMPLEX, 2, (124, 252, 0), 2)
 
@@ -76,7 +76,7 @@ class Render:
 
             fps = int(video.get(5))
 
-            if cv2.waitKey(25) & 0xFF == ord('c'):
+            if cv2.waitKey(20) & 0xFF == ord('c'):
                 break
         else:
             break
