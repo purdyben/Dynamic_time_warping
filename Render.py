@@ -4,7 +4,6 @@ import numpy as np
 import cv2
 # import multiprocessing
 from multiprocessing import Process
-import HackISU2019.TrackLines as TrackLine
 import HackISU2019.Dynamic_time_warping as DTW
 from HackISU2019.PostGetData import PostData
 
